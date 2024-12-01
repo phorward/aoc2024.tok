@@ -1,0 +1,30 @@
+begin {
+    left = ,
+    right = ,
+}
+
+Int _ Int '\n' {
+    left.push($1)
+    right.push($3)
+}
+
+end {
+    # print(left)
+    # print(right)
+    left.sort()
+    right.sort()
+
+    sum = 0
+
+    for i in iter(left).enum() {
+        diff = i[1] - right[i[0]]
+        if diff < 0 {
+            sum += -diff
+        }
+        else {
+            sum += diff
+        }
+    }
+
+    print(sum)
+}

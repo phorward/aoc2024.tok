@@ -1,0 +1,25 @@
+begin {
+    left = ,
+    right = ()
+}
+
+Int _ Int '\n' {
+    left += $1
+
+    # BUG: There seem to be some problems here with the int-indexing of a dict.
+    right[str($3)] = right[str($3)] + 1
+
+    #left[$1] = left[$1] + 1    # BUG: left[$1] += 1    left[$1]++
+    #right[$3] = right[$3] + 1  # BUG: right[$3] += 1   right[$3]++
+}
+
+end {
+    # print(left)
+    # print(right)
+    sum = 0
+    for k in left {
+        # print(repr(k), k, right[str(k)], k * right[str(k)])
+        sum += k * right[str(k)]
+    }
+    print(sum)
+}
