@@ -1,0 +1,10 @@
+begin {
+    mul_enabled = true
+}
+
+'do()' mul_enabled = true
+'don\'t()' mul_enabled = false
+
+'mul(' a => Int ',' b => Int ')'  { if mul_enabled sum += $a * $b }
+
+end print(sum)

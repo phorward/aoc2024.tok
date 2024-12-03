@@ -1,0 +1,2 @@
+'mul(' a => Int ',' b => Int ')'  { sum += $a * $b }
+end print(sum)
