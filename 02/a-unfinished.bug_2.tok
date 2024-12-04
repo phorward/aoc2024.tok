@@ -1,0 +1,9 @@
+# $ tokay a-unfinished.bug_2.tok -- example
+# Line 9, column 34: Method 'int_get_item' not found
+# (looks like a variation of a-unfinished.bug_1.tok)
+
+_ : ' '
+
+(Int _)+  {
+    if $1[0] < $1[1] < $1[2] < $1[3] < $1[4] || $1[0] > $1[1] > $1[2] > $1[3] > $1[4] valid += 1
+}

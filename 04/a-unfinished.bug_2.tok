@@ -1,0 +1,42 @@
+# $ tokay a-unfinished.bug_2.tok -- example
+# Line 16, column 21: Expecting ')', but got "("
+
+begin matrix = ,
+
+Chars<A-Z>  matrix += $1
+
+end {
+    for i in range(matrix.len) {
+        for j in range(matrix[i].len) {
+            if matrix[i][j] == "X" {
+                find = "MAS"
+
+                for dir in (
+                    (-1, -1),
+                    (-1, 0),
+                    (-1, 1),
+                    (0, -1),
+                    (0, 1),
+                    (1, 1),
+                    (1, 0),
+                    (1, 1),
+                ) {
+                    charidx = 0
+                    x = i
+                    y = j
+
+                    loop matrix[x + dir[0]][y + dir[1]] == find[charidx++] {
+                        x += dir[0]
+                        y += dir[1]
+                    }
+
+                    if charidx == find.len {
+                        total++
+                    }
+                }
+            }
+        }
+    }
+
+    print(total)
+}

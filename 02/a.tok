@@ -23,9 +23,6 @@ is_safe : @report {
     if is_safe($1) {
         safe++
     }
-
-    # print($1[0] < $1[1] < $1[2])  # BUG: thread 'main' panicked at /home/neo/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokay-0.6.6/src/vm/context.rs:118:44: called `Option::unwrap()` on a `None` value
-    #if $1[0] < $1[1] < $1[2] < $1[3] < $1[4] || $1[0] > $1[1] > $1[2] > $1[3] > $1[4] valid += 1  # BUG: Line 3, column 34: Method 'int_get_item' not found
 }
 
 end {

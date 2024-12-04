@@ -1,0 +1,7 @@
+# $ tokay a-unfinished.bug_3.tok -- example
+# Line 2, column 5: Cannot assign to constant 'debug'
+# (misleading...)
+
+begin {
+    debug = ,
+}

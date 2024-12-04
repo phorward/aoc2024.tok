@@ -1,0 +1,35 @@
+begin  matrix = ,
+
+Chars<A-Z>  matrix += $1
+
+end {
+    total = 0
+
+    for i in range(matrix.len) {
+        for j in range(matrix[i].len) {
+            if matrix[i][j] == "X" {
+                find = "MAS"
+
+                for dir in ((-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)) {
+                    charidx = 0
+                    x = i
+                    y = j
+
+                    loop find[charidx] && x + dir[0] >= 0 && x + dir[0] < matrix.len && y + dir[1] >= 0 && y + dir[1] < matrix[i].len {
+                        if matrix[x + dir[0]][y + dir[1]] != find[charidx] break
+
+                        x += dir[0]
+                        y += dir[1]
+                        charidx++
+                    }
+
+                    if charidx == find.len {
+                        total++
+                    }
+                }
+            }
+        }
+    }
+
+    print(total)
+}

@@ -1,0 +1,36 @@
+# $ tokay b-unfinished.bug_1.tok -- example
+# (bug is, that the ++ and += operators don't work on dict with a new key)
+# (dict shall not use the index-offset fallback, provide a method for that!)
+
+begin {
+    left = ,
+    right = ()
+}
+
+Int _ Int '\n' {
+    left += $1
+
+    # right[$3]++  # no change
+    # right[$3] += 1  # no change
+    # right[$3] = right[$3] + 1  # works
+
+    # right[str($3)]++  # no change
+    # right[str($3)] += 1  # no change
+    right[str($3)] = right[str($3)] + 1  # works
+}
+
+end {
+    print(left)
+    print(right)
+
+    sum = 0
+    sum2 = 0
+
+    for k in left {
+        print(type(k), k, right[k], k * right[k])
+        sum += k * right[k]
+        sum2 += k * right[str(k)]
+    }
+    print(sum)
+    print(sum2)
+}

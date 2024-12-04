@@ -1,3 +1,8 @@
+# $ tokay b-unfinished.bug_3.tok -- example
+# (1, 2, 7, 8, 9) 1
+# (1, 7, 8, 9)
+# Line 25, column 14: iter_next() only accepts 'iter' as parameter, not 'void'
+
 _ : ' '
 
 is_safe : @report {
@@ -31,11 +36,12 @@ copy : @report {
         safe++
     }
     else {
-        mod = copy($1)
-        for i in range(0, mod.len) {
-            modmod = copy(mod)
-            modmod[i] = void
-            if is_safe(modmod) {
+        for i in range(1, $1.len - 1) {
+            mod = copy($1)  # $1 becomes void??
+            print(mod, i)
+            mod[i] = void
+            print(mod)
+            if is_safe(mod) {
                 safe++
                 break
             }

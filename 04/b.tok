@@ -1,0 +1,35 @@
+begin  matrix = ,
+
+Chars<A-Z.>  matrix += $1
+
+end {
+    total = 0
+
+    for i in range(matrix.len) {
+        for j in range(matrix[i].len) {
+            if matrix[i][j] == "A" {
+                part = 0
+
+                for dir in ((-1, -1), (-1, 1), (1, -1), (1, 1),) {
+                    x = i + dir[0]
+                    y = j + dir[1]
+
+                    if x >= 0 && x < matrix.len && y >= 0 && y < matrix[i].len && matrix[x][y] == "M" {
+                        x = i + -dir[0]
+                        y = j + -dir[1]
+
+                        if x >= 0 && x < matrix.len && y >= 0 && y < matrix[i].len && matrix[x][y] == "S" {
+                            part++
+                        }
+                    }
+                }
+
+                if part == 2 {
+                    total++
+                }
+            }
+        }
+    }
+
+    print(total)
+}

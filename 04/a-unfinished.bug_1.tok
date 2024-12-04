@@ -1,0 +1,24 @@
+# $ tokay a-unfinished.bug_1.tok -- example
+# thread 'main' panicked at /home/neo/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokay-0.6.6/src/compiler/iml/imlprogram.rs:190:68:
+# called `Option::unwrap()` on a `None` value
+# note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+begin matrix = ,
+
+Chars<A-Z>  matrix += $1
+
+end {
+    xmas : @i, j {
+        print(i, j)
+    }
+
+    for i in range(matrix.len) {
+        for j in range(matrix[i].len) {
+            if matrix[i][j] == "X" {
+                total += xmas(i, j)
+            }
+        }
+    }
+
+    print(total)
+}

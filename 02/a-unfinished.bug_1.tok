@@ -1,0 +1,10 @@
+# $ tokay a-unfinished.bug_1.tok -- example
+# thread 'main' panicked at /home/neo/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokay-0.6.6/src/vm/context.rs:118:44:
+# called `Option::unwrap()` on a `None` value
+# note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+_ : ' '
+
+(Int _)+  {
+    print($1[0] < $1[1] < $1[2])
+}
