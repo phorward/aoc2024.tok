@@ -1,0 +1,91 @@
+# $ tokay b-unfinished.bug_1.tok -- input
+# Line 41, column 13: Expecting <parselet Block>, but got "\n"
+# (loop must have the opening "{" in the same row)
+
+begin {
+    rules = ()
+    sum = 0
+}
+
+Int '|' Int '\n' {
+    if !rules[str($1)]
+        rules[str($1)] = $3,
+    else
+        rules[str($1)] += $3
+}
+
+IntList : @{
+    IntList ',' Int  $1 + $3
+    Int  $1,
+}
+
+IntList {
+    for i in range($1.len) {
+        follow = $1[i + 1]
+        valid = false
+
+        if follow {
+            for page in rules[str($1[i])] || (,) {
+                if page == follow {
+                    valid = true
+                    break
+                }
+            }
+        }
+        else {
+            valid = true
+        }
+
+        if !valid break
+    }
+
+    if !valid {
+        prev = $1
+
+        loop
+        {
+            changes = false
+            fixed = ,
+
+            current = prev[0]
+            follow = prev[1]
+
+            for i in range(1, prev.len + 1) {
+                if follow {
+                    valid = false
+
+                    for page in rules[str(current)] || (,) {
+                        if page == follow {
+                            valid = true
+                            break
+                        }
+                    }
+
+                    if valid {
+                        fixed += current
+                        current = follow
+                        follow = prev[i + 1]
+                    }
+                    else {
+                        changes = true
+                        fixed += follow
+                        follow = current
+                        current = prev[i + 1]
+                    }
+                }
+                else {
+                    fixed += current
+                }
+            }
+
+            if !changes break
+            prev = fixed
+        }
+
+        sum += fixed[(fixed.len / 2).trunc]
+    }
+}
+
+end {
+    print(sum)
+}

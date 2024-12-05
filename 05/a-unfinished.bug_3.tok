@@ -1,0 +1,45 @@
+# $ tokay b-unfinished.bug_3.tok -- example
+# true : (75, 47, 61, 53, 29)
+# true : (97, 61, 53, 29, 13)
+# true : (75, 29, 13)
+# false : (75, 97, 47, 61, 53)
+# Line 23, column 30: iter_next() only accepts 'iter' as parameter, not 'void'
+# (same bug as 02/b-unfinished.bug_3.tok ??)
+
+begin {
+    rules = ()
+}
+
+Int '|' Int '\n' {
+    if !rules[str($1)]
+        rules[str($1)] = $3,
+    else
+        rules[str($1)] += $3
+}
+
+IntList : @{
+    IntList ',' Int  $1 + $3
+    Int  $1,
+}
+
+IntList {
+    for i in range($1.len) {
+        follow = $1[i + 1]
+        valid = false
+
+        if follow {
+            for page in rules[str($1[i])] {
+                if page == follow {
+                    valid = true
+                    break
+                }
+            }
+        }
+        else {
+            valid = true
+        }
+
+        if !valid break
+    }
+    print(valid, ":", $1)
+}

@@ -1,0 +1,42 @@
+# $ tokay b-unfinished.bug_2.tok -- example
+# Line 19, column 14: Expecting '}', but got "="
+# (it has to do with the name `next`, which is reserved)
+# (there should be a warning when assigning to next!)
+
+begin {
+    rules = ()
+}
+
+Int '|' Int '\n' {
+    if !rules[str($1)]
+        rules[str($1)] = $3,
+    else
+        rules[str($1)] += $3
+}
+
+IntList : @{
+    IntList ',' Int  $1 + $3
+    Int  $1,
+}
+
+IntList {
+    for i in range($1.len) {
+        next = $1[i + 1]
+        valid = false
+
+        if next {
+            for page in rules[str($1[i])] {
+                if page == next {
+                    valid = true
+                    break
+                }
+            }
+        }
+        else {
+            valid = true
+        }
+
+        if !valid break
+    }
+    print(valid, ":", $1)
+}
