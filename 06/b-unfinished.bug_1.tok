@@ -1,0 +1,88 @@
+# $ tokay b.tok -- example
+# thread 'main' panicked at /home/neo/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokay-0.6.6/src/compiler/iml/imlprogram.rs:190:68:
+# called `Option::unwrap()` on a `None` value
+# note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+begin {
+    map = ,
+    level = ,
+
+    dirs = (
+        "^" => (-1, 0)
+        ">" => (0, 1)
+        "v" => (1, 0)
+        "<" => (0, -1)
+    )
+
+    spin = (
+        "^" => ">"
+        ">" => "v"
+        "v" => "<"
+        "<" => "^"
+    )
+
+    dir = "^"
+}
+
+Char<.#>  level += $1
+
+Char<\^>  {
+    x = map.len()
+    y = level.len()
+    level += dir
+}
+
+Char<\n>  {
+    map.push(level)
+    level = ,
+}
+
+end {
+    patrol: @ x, y, detect_loop = false {
+        decisions = ()
+
+        loop {
+            if decisions[(x, y)] && detect_loop {
+                return true
+            }
+            else {
+                decisions[(x, y)] = true
+            }
+
+            nx = x + dirs[dir][0]
+            ny = y + dirs[dir][1]
+
+            pos = map[nx] && map[nx][ny]
+
+            if !pos break
+
+            if pos == "#" {
+                dir = spin[dir]
+                continue
+            }
+
+            x = nx
+            y = ny
+        }
+
+        decisions
+    }
+
+    # Initial patrol
+    visited = patrol(x, y)
+    print(visited)
+    exit
+
+    loops = 0
+    for x in range(map.len) {
+        for y in range(map[x].len) {
+            if visited[(x, y)] {
+                 map[x][y] = "#"
+                 if patrol(x, y, detect_loop=true) loops++
+                 map[x][y] = "."
+            }
+        }
+    }
+
+    print(loops)
+}

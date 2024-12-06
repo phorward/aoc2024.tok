@@ -1,0 +1,68 @@
+begin {
+    map = ,
+    level = ,
+    x = 0
+    y = 0
+
+    dirs = (
+        "^" => (-1, 0)
+        ">" => (0, 1)
+        "v" => (1, 0)
+        "<" => (0, -1)
+    )
+
+    spin = (
+        "^" => ">"
+        ">" => "v"
+        "v" => "<"
+        "<" => "^"
+    )
+
+    dir = "^"
+}
+
+Char<.#>  level += $1
+
+Char<\^>  {
+    x = map.len()
+    y = level.len()
+    level += dir
+}
+
+Char<\n>  {
+    map.push(level)
+    level = ,
+}
+
+end {
+    total = 0
+
+    loop {
+        if map[x][y] != "X" {
+            map[x][y] = "X"
+            total += 1
+        }
+
+
+        nx = x + dirs[dir][0]
+        ny = y + dirs[dir][1]
+
+        pos = map[nx] && map[nx][ny]
+
+        if !pos break
+
+        if pos == "#" {
+            dir = spin[dir]
+            continue
+        }
+
+        x = nx
+        y = ny
+    }
+
+    # for row in map {
+    #     print("".join(row))
+    # }
+
+    print(total)
+}

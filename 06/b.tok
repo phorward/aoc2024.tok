@@ -1,0 +1,113 @@
+# $ tokay b.tok -- example
+# thread 'main' panicked at /home/neo/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokay-0.6.6/src/compiler/iml/imlprogram.rs:190:68:
+# called `Option::unwrap()` on a `None` value
+# note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+begin {
+    map = ,
+    level = ,
+
+    dirs = (
+        "^" => (-1, 0)
+        ">" => (0, 1)
+        "v" => (1, 0)
+        "<" => (0, -1)
+    )
+
+    spin = (
+        "^" => ">"
+        ">" => "v"
+        "v" => "<"
+        "<" => "^"
+    )
+
+    dir = "^"
+}
+
+Char<.#>  level += $1
+
+Char<\^>  {
+    startx = x = map.len()
+    starty = y = level.len()
+    level += dir
+}
+
+Char<\n>  {
+    map.push(level)
+    level = ,
+}
+
+end {
+    visited = ()
+
+    loop {
+        visited[x + ":" + y] = true
+
+        nx = x + dirs[dir][0]
+        ny = y + dirs[dir][1]
+
+        pos = map[nx] && map[nx][ny]
+
+        if !pos break
+
+        if pos == "#" {
+            dir = spin[dir]
+            continue
+        }
+
+        x = nx
+        y = ny
+    }
+
+    loops = 0
+    for k in visited.keys {
+        k = k.split(":")
+
+        kx = int(k[0])
+        ky = int(k[1])
+
+        if kx == startx && ky == starty continue
+
+        map[kx][ky] = "#"
+
+        # print("--- temp ---")
+        # for row in map {
+        #     print("".join(row))
+        # }
+
+        # --- wtf ---
+        x = startx
+        y = starty
+        dir = "^"
+
+        obs = ()
+
+        loop {
+            nx = x + dirs[dir][0]
+            ny = y + dirs[dir][1]
+
+            pos = map[nx] && map[nx][ny]
+
+            if !pos break
+
+            if pos == "#" {
+                dir = spin[dir]
+
+                if obs[nx + ":" + ny + ":" + dir] {
+                    loops++
+                    break
+                }
+
+                obs[nx + ":" + ny + ":" + dir] = true
+                continue
+            }
+
+            x = nx
+            y = ny
+        }
+
+        map[kx][ky] = "."
+    }
+
+    print(loops)
+}

@@ -1,0 +1,27 @@
+# $ tokay a.tok -- example
+# thread 'main' panicked at /home/neo/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokay-0.6.6/src/compiler/ast.rs:129:44:
+# Key not found
+# note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+begin {
+    map = ,
+    level = ,
+    x = 0
+    y = 0
+}
+
+Char<.#>  level += $1
+Char<^>  {
+    x = map.len
+    y = level.len
+    level += "."
+}
+Char<\n>  {
+    map.push(level)
+    level = ,
+}
+
+end {
+    print(map)
+    print(x, y)
+}

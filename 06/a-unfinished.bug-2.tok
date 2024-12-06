@@ -1,0 +1,29 @@
+# (see comments below)
+begin {
+    map = ,
+    level = ,
+    x = 0
+    y = 0
+}
+
+Char<.#>  level += $1
+Char<\^>  {
+    # Gives x and y just a reference to the len method, therefore the result below...
+    x = map.len
+    y = level.len
+
+    # workaround:
+    # x = map.len()
+    # y = level.len()
+    level += "."
+    print("GUARD")
+}
+Char<\n>  {
+    map.push(level)
+    level = ,
+}
+
+end {
+    print(map)
+    print(x, y) # ... is 10 10 lol
+}

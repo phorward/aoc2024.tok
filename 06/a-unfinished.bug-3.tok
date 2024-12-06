@@ -1,0 +1,73 @@
+# Line 45, column 13: The variable '_x' is invalid, only constants may start with '_'
+# Line 46, column 13: The variable '_y' is invalid, only constants may start with '_'
+# Line 43, column 13: Use of undefined name 'next_x'
+# Line 43, column 21: Use of undefined name 'next_y'
+# Line 48, column 19: Use of undefined name 'next_x'
+# Line 48, column 27: Use of undefined name 'next_y'
+# Line 56, column 13: Use of undefined name 'next_x'
+# Line 57, column 13: Use of undefined name 'next_y'
+# (there seems to be a problem with the 'next' identifier)
+
+begin {
+    map = ,
+    level = ,
+    x = 0
+    y = 0
+
+    dirs = (
+        "^" => (-1, 0)
+        ">" => (0, 1)
+        "v" => (1, 0)
+        "<" => (0, -1)
+    )
+
+    spin = (
+        "^" => ">"
+        ">" => "v"
+        "v" => "<"
+        "<" => "^"
+    )
+
+    dir = "^"
+}
+
+Char<.#>  level += $1
+
+Char<\^>  {
+    x = map.len()
+    y = level.len()
+    level += dir
+}
+
+Char<\n>  {
+    map.push(level)
+    level = ,
+}
+
+end {
+    #print(map)
+    #print(x, y)
+    #print(dir)
+
+    loop {
+        map[next_x][next_y] = "X"
+
+        next_x = x + dirs[dir][0]
+        next_y = y + dirs[dir][1]
+
+        pos = map[next_x][next_y]
+
+        if !pos || pos == "#" {
+            dir = spin[dir]
+            continue
+        }
+
+        if pos == "X" break
+        x = next_x
+        y = next_y
+    }
+
+    for row in map {
+        print("".join(row))
+    }
+}
