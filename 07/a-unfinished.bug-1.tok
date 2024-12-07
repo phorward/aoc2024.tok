@@ -1,0 +1,35 @@
+# (the total is void, but when the commented print is visible, its calculated and works?????)
+
+_ : ' '
+
+Results : @{
+    begin values = ,
+    Int _ {
+        if !values {
+            new_values = $1,
+        }
+        else {
+            new_values = ,
+            for value in values {
+                new_values += value + $1
+                new_values += value * $1
+            }
+        }
+
+        values = new_values
+        repeat
+    }
+    end values
+}
+
+expect => Int _ ':' _ results => Results {
+    # print($expect, $results)
+    for result in $results {
+        if $expect == result {
+            total += result
+            break
+        }
+    }
+}
+
+end print(total)
