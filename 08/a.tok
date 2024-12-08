@@ -1,0 +1,51 @@
+begin {
+    row = 0
+    col = 0
+    antennae = ()
+}
+
+Char<\n> row++  if !width width = col  col = 0
+Char<.>  {
+    col++
+}
+
+Char {
+    if !antennae[$1] {
+        antennae[$1] = ,
+    }
+
+    antennae[$1].push((row, col++))
+}
+
+end {
+    col = width
+    antinodes = ()
+
+    for k in antennae.keys {
+        # print(k, antennae[k])
+
+        # Generate antinodes for each pair of antennae
+        for a in antennae[k] {
+            for b in antennae[k] {
+                if a == b continue
+
+                dy = a[0] - b[0]
+                dx = a[1] - b[1]
+
+                ay = a[0] + dy
+                ax = a[1] + dx
+
+                if ay >= 0 && ay < row && ax >= 0 && ax < col
+                    antinodes[ay + ":" + ax] = true
+
+                ay = b[0] - dy
+                ax = b[1] - dx
+
+                if ay >= 0 && ay < row && ax >= 0 && ax < col
+                    antinodes[ay + ":" + ax] = true
+            }
+        }
+    }
+
+    print(antinodes.len)
+}

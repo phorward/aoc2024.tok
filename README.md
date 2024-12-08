@@ -10,6 +10,8 @@ In [Tokay](https://tokay.dev) v0.6.6.
 - Day 4: Medium, many bugs
 - Day 5: Easy, many bugs
 - Day 6: Heavy, many bugs
+- Day 7: Medium, one bug
+- Day 8: Heavy, many bugs
 
 ## Found missing features for Tokay
 
