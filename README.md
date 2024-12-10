@@ -6,12 +6,13 @@ In [Tokay](https://tokay.dev) v0.6.6.
 
 - Day 1: Easy, some bugs
 - Day 2: Medium, some bugs
-- Day 3: Easy
+- Day 3: Easy, this was a Tokay parsing delight :-D
 - Day 4: Medium, many bugs
 - Day 5: Easy, many bugs
 - Day 6: Heavy, many bugs
 - Day 7: Medium, one bug
-- Day 8: Heavy, many bugs
+- Day 8: Heavy, had problems to find
+- Day 9: Part 1 was easy, part 2 took a day more for this to resolve...
 
 ## Found missing features for Tokay
 

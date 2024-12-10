@@ -1,0 +1,27 @@
+#$ tokay a.tok -- 12345
+#(5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5)
+
+begin {
+    id = 0
+    is_size = true
+    map = ,
+}
+
+Char<0-9> {
+    if is_size {
+        for i in range(int($1)) {
+            map += id  # pushes a reference to id!
+        }
+
+        id++
+    }
+    else {
+        for i in range(int($1)) {
+            map += null
+        }
+    }
+}
+
+end {
+    print(map)
+}

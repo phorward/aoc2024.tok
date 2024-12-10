@@ -1,0 +1,84 @@
+begin {
+    id = 0
+    fid = null
+    files = ()
+    frees = ,
+    map = ,
+}
+
+Char<0-9> {
+    if fid == null {
+        for i in range(int($1)) {
+            if files[id] == void {
+                files[id] = map.len(), 1
+            }
+            else {
+                files[id][1]++
+            }
+
+            map.push(id)
+        }
+
+        fid = map.len()
+        id++
+    }
+    else {
+        free = int($1)
+        frees.push((fid, free))
+
+        for i in range(free) {
+            map += null
+        }
+
+        fid = null
+    }
+}
+
+end {
+    # print(map)
+    # print(files)
+
+    for id in range(id - 1, -1, -1) {
+        # print(id, files[id])
+
+        current = files[id][0]
+        size = files[id][1]
+
+        for free in iter(frees).enum {
+            idx = free[0]
+
+            start = free[1][0]
+            if start > current break
+
+            free = free[1][1]
+
+            if free >= size {
+                for i in range(size) {
+                    map[start + i] = id
+                    map[current + i] = null
+                }
+
+                free = free - size
+                if !free
+                    frees[idx] = void
+                else
+                    frees[idx] = (start + size, free)
+
+                break
+            }
+        }
+    }
+
+    # print(map)
+
+    # Checksum
+    checksum = 0
+    for i in range(map.len) {
+        # print(map[i])
+        if map[i] != null {
+            checksum += i * map[i]
+        }
+    }
+
+    print(checksum)
+}

@@ -1,0 +1,60 @@
+begin {
+    id = 0
+    is_size = true
+    map = ,
+}
+
+Char<0-9> {
+    if is_size {
+        for i in range(int($1)) {
+            map.push(id)
+        }
+
+        is_size = false
+        id++
+    }
+    else {
+        for i in range(int($1)) {
+            map += null
+        }
+
+        is_size = true
+    }
+}
+
+end {
+    # Compact
+    changes = true
+    loop changes {
+        changes = false
+        start = 0
+        stop = map.len - 1
+
+        loop start < stop {
+            if (id = map[stop]) != null {
+                loop start < stop {
+                    if map[start] == null {
+                        map[start] = id
+                        map[stop] = null
+                        changes = true
+                        break
+                    }
+
+                    start++
+                }
+            }
+
+            stop--
+        }
+    }
+
+    # Checksum
+    checksum = 0
+    for i in range(map.len) {
+        if map[i] != null {
+            checksum += i * map[i]
+        }
+    }
+
+    print(checksum)
+}

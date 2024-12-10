@@ -1,0 +1,51 @@
+#$ tokay a.tok -- example
+#Line 30, column 13: Expecting <parselet Sequences>, but got "="
+#(end keyword should only be allowed on parselet block)
+
+begin {
+    id = 0
+    is_size = true
+    map = ,
+}
+
+Char<0-9> {
+    if is_size {
+        for i in range(int($1)) {
+            map.push(id)
+        }
+
+        is_size = false
+        id++
+    }
+    else {
+        for i in range(int($1)) {
+            map += null
+        }
+
+        is_size = true
+    }
+}
+
+end {
+    changes = true
+    loop changes {
+        changes = false
+        start = 0
+        end = map.len - 1
+
+        loop start < end {
+            if (id = map[end--]) != null {
+                loop start < end {
+                    if map[start] == null {
+                        map[start] = id
+                        changes = true
+                    }
+
+                    start++
+                }
+            }
+        }
+    }
+
+    print(map)
+}
