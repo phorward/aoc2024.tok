@@ -1,0 +1,75 @@
+begin {
+    map = (,),
+    height = 0
+    width = 0
+    start = true
+}
+
+Char<0-9>  {
+    if start {
+        map.push((,))
+        width = 0
+        start = false
+    }
+
+    map[height] += int($1)
+    width++
+}
+
+Char<\n>  start = true  height++
+
+end {
+    # print(map)
+    heads = ()
+
+    for x in range(height) {
+        for y in range(width) {
+            if map[x][y] == 0 heads[x + ":" + y] = (x + ":" + y => 0)
+        }
+    }
+
+    changes = true
+
+    loop changes {
+        changes = false
+
+        for head in heads.items {
+            key = head[0]
+            trails = head[1]
+            new_trails = ()
+
+            for trail in trails.items {
+                pos = trail[0].split(":")
+                curx = int(pos[0])
+                cury = int(pos[1])
+                level = trail[1]
+
+                if level == 9 continue
+
+                for step in ((-1, 0), (1, 0), (0, 1), (0, -1)) {
+                    x = curx + step[0]
+                    y = cury + step[1]
+
+                    if x >= 0 && x < height && y >= 0 && y < width {
+                        if map[x][y] == map[curx][cury] + 1 {
+                            new_trails[x + ":" + y] = map[x][y]
+                        }
+                    }
+                }
+            }
+
+            if new_trails {
+                heads[key] = new_trails
+                changes = true
+            }
+        }
+    }
+
+    # print(heads)
+    checksum = 0
+    for head in heads {
+        checksum += head.len()
+    }
+
+    print(checksum)
+}

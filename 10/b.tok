@@ -1,0 +1,64 @@
+begin {
+    map = (,),
+    height = 0
+    width = 0
+    start = true
+}
+
+Char<0-9>  {
+    if start {
+        map.push((,))
+        width = 0
+        start = false
+    }
+
+    map[height] += int($1)
+    width++
+}
+
+Char<\n>  start = true  height++
+
+end {
+    # print(map)
+    heads = ()
+
+    for x in range(height) {
+        for y in range(width) {
+            if map[x][y] == 0 {
+                heads[x + ":" + y] = x, y
+            }
+        }
+    }
+
+    # Distinct trails
+    total = 0
+
+    for head in heads {
+        stack = (head[0], head[1]),
+
+        loop stack {
+            last = stack.pop()
+
+            x = last[0]
+            y = last[1]
+
+            if map[x][y] == 9 {
+                total++
+            }
+            else {
+                for step in ((-1, 0), (1, 0), (0, 1), (0, -1)) {
+                    stepx = x + step[0]
+                    stepy = y + step[1]
+
+                    if stepx >= 0 && stepx < height && stepy >= 0 && stepy < width {
+                        if map[stepx][stepy] == map[x][y] + 1 {
+                            stack.push((stepx, stepy))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    print(total)
+}
