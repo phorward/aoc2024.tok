@@ -1,0 +1,40 @@
+begin {
+    stones = ,
+    blinks = 25
+}
+
+Int  stones += $1
+
+end {
+    # print(stones)
+
+    for blink in range(blinks) {
+        print(blink, stones.len)
+        new_stones = ,
+
+        for stone in stones {
+            if stone == 0 {
+                new_stones += 1
+                continue
+            }
+
+            svalue = str(stone)
+            slen = svalue.len()
+
+            if slen % 2 == 0 {
+                middle = slen // 2
+                new_stones += int(svalue.substr(0, middle))
+                new_stones += int(svalue.substr(middle))
+                continue
+            }
+
+            new_stones += stone * 2024
+        }
+
+        stones = new_stones
+        # print(blink, stones.len)
+    }
+
+    # print(stones)
+    print(stones.len)
+}

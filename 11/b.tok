@@ -1,0 +1,79 @@
+begin {
+    nulls = 0
+    ones = 0
+    evens = ()
+    odds = ()
+
+    blinks = 75
+}
+
+Int  {
+    if $1 == 0
+        nulls++
+    else if $1 == 1
+        ones++
+    else {
+        stone = str($1)
+
+        if stone.len % 2 == 0
+            evens[stone] = evens[stone] + 1
+        else
+            odds[stone] = odds[stone] + 1
+    }
+}
+
+end {
+    for blink in range(blinks) {
+        new_nulls = 0
+        new_ones = 0
+        new_evens = ()
+        new_odds = ()
+
+        # Nulls
+        new_ones += nulls
+
+        # Ones
+        if ones new_evens["2024"] = ones
+
+        # evens
+        for even in evens.keys {
+            middle = even.len // 2
+            stones = evens[even]
+
+            for stone in (int(even.substr(0, middle)), int(even.substr(middle))) {
+                if stone == 0
+                    new_nulls += stones
+                else if stone == 1
+                    new_ones += stones
+                else {
+                    stone = str(stone)
+                    if stone.len % 2 == 0
+                        new_evens[stone] = new_evens[stone] + stones
+                    else
+                        new_odds[stone] = new_odds[stone] + stones
+                }
+            }
+        }
+
+        # odds
+        for odd in odds.keys {
+            stone = str(int(odd) * 2024)
+            stones = odds[odd]
+
+            if stone.len % 2 == 0
+                new_evens[stone] = new_evens[stone] + stones
+            else
+                new_odds[stone] = new_odds[stone] + stones
+        }
+
+        nulls = new_nulls
+        ones = new_ones
+        evens = new_evens
+        odds = new_odds
+    }
+
+    count = nulls + ones
+    for even in evens count += even
+    for odd in odds count += odd
+    print(count)
+}

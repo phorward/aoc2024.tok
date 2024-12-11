@@ -1,0 +1,71 @@
+begin {
+    nulls = 0
+    ones = 0
+    evens = ,
+    odds = ,
+
+    blinks = 25
+}
+
+Int  {
+    if $1 == 0
+        nulls++
+    else if $1 == 1
+        ones++
+    else if str($1).len % 2 == 0
+        evens += $1
+    else
+        odds += $1
+}
+
+end {
+    for blink in range(blinks) {
+        print(blink, nulls + ones + evens.len + odds.len)
+
+        new_nulls = 0
+        new_ones = 0
+        new_evens = ,
+        new_odds = ,
+
+        # Nulls
+        new_ones += nulls
+
+        # Ones
+        for i in range(ones) new_evens += 2024
+
+        # evens
+        for even in evens {
+            svalue = str(even)
+            slen = svalue.len()
+
+            middle = slen // 2
+
+            for stone in (int(svalue.substr(0, middle)), int(svalue.substr(middle))) {
+                if stone == 0
+                    new_nulls++
+                else if stone == 1
+                    new_ones++
+                else if str(stone).len % 2 == 0
+                    new_evens += stone
+                else
+                    new_odds += stone
+            }
+        }
+
+        # odds
+        for odd in odds {
+            odd = odd * 2024
+            if str(odd).len % 2 == 0
+                new_evens += odd
+            else
+                new_odds += odd
+        }
+
+        nulls = new_nulls
+        ones = new_ones
+        evens = new_evens
+        odds = new_odds
+    }
+
+    print(nulls + ones + evens.len + odds.len)
+}
